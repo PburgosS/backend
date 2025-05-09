@@ -1,10 +1,17 @@
 const mongoose = require('mongoose');
 
 const productArrivalSchema = mongoose.Schema({
-    product : [{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'product',
-        required : true
+    productArrived : [{
+        product : {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'product',
+            required : true
+        },
+        productSerialNumber : {
+            type : String,
+            required : true,
+            unique : true
+        }
     }],
     provider : {
         type : mongoose.Schema.Types.ObjectId,

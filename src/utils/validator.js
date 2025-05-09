@@ -9,13 +9,13 @@ const validateIsString = (stringText, fieldName) => {
     }
 }
 const validateStringNameStructure = (stringNameStructure, fieldName) => {
-    if(!/^[a-zA-ZáéíóúñÑ\s]+$/i.test(stringNameStructure)){
+    if(!/^[a-zA-ZáéíóúñÑ'-\s]+$/i.test(stringNameStructure)){
         throw new Error(`${fieldName} must contain letters, letters with accent, ñ and Ñ`);
     }
 }
 const validateStringMaxLength = (stringMaxLength, fieldName) => {
-    if(stringMaxLength.length > 31){
-        throw new Error(`${fieldName} must contain at most 30 characters`);
+    if(stringMaxLength.length > 51){
+        throw new Error(`${fieldName} must contain at most 50 characters`);
     }
 }
 const validateStringWithNumberStructure = (stringNumberText, fieldName) => {
