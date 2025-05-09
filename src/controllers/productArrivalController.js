@@ -2,18 +2,34 @@ const productArrivalModel = require('../models/productArrivalModel');
 const productStatusModel = require('../models/productStatusModel');
 const validator = require('../utils/validator'); 
 const Errors = require('../errors/errors');
+const log4 = require('log4js');
+const logger = log4.getLogger('productArrivalController');
+logger.level = 'all';
 
 const createProductArrival = async (req, res) => {
     const registerCounter = Object.keys(req.body).length;
     const productArrivalData = [];
+    const arrivedProductsData = [];
     const defaultProductStatus = await productStatusModel.findOne({productStatusName : 'En Bodega'}, '-productStatusName -__v');
     try {
         for(let i = 0; i < registerCounter; i++){
-            const { product, provider, arrivalDate, buyOrder, receipt } = req.body[i];
-            //Validate Product Array
-            validator.validateIsArray(product, 'Product');
-            validator.validateArrayVoid(product, 'Product');
-            //Validate Provider
+            const { productArrived, provider, arrivalDate, buyOrder, receipt } = req.body[i];
+            for(let j = 0; j < productArrived.length; j++){
+                const { product, productSerialNumber} =  productArrived[j];
+                //Validate Product Array
+                validator.validateIsString(product, 'Product');
+                validator.validateStringWithNumberStructure(product, 'Product');
+                //Validate serialNumber
+                validator.validateIsString(productSerialNumber, 'Serial Number');
+                validator.validateStringWithNumberStructure(productSerialNumber, 'Serial Number');
+                let productArrivedData = {
+                    product : product, 
+                    productSerialNumber : productSerialNumber
+                }
+                arrivedProductsData.push(productArrivedData);
+                console.log(arrivedProductsData);
+            }
+            //Validate Provider 
             validator.validateIsString(provider, 'Provider');
             validator.validateIDStructure(provider, 'Provider');
             //Validate Arrival Date
@@ -26,7 +42,7 @@ const createProductArrival = async (req, res) => {
             validator.validateIsString(receipt, 'Receipt Document');
             validator.validateTaxDocument(receipt, 'Receipt Document');
             let createdProductArrival = new productArrivalModel({
-                product : product,
+                productArrived : arrivedProductsData,
                 provider : provider,
                 arrivalDate : arrivalDate,
                 buyOrder : buyOrder,
