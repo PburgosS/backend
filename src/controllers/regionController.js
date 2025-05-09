@@ -13,8 +13,8 @@ const createRegion = async (req, res) => {
             validator.validateStringMaxLength(regionName, 'Region Name');
             validator.validateIsString(regionName, 'Region Name');
             //Validations Region ISO Code
-            validator.validateIsString(regionName, 'Region Name');
-            validator.validateISOString(regionName, 'Region Name');
+            validator.validateIsString(regionISOCode, 'Region ISO Code');
+            validator.validateISOString(regionISOCode, 'Region ISO Code');
             //Validations Country Link
             validator.validateIsString(countryLink, 'Country Link');
             validator.validateIDStructure(countryLink, 'Country Link');
